@@ -55,7 +55,7 @@ if (isset($_GET['dept_no'])) {
             <tbody>
                 <?php foreach ($employes as $emp) { ?>
                 <tbody>
-                    <td><?php echo $emp['emp_no']; ?></td>
+                    <td><a href="fiche.php?emp_no=<?php echo $emp['emp_no'] ?>"><?php echo $emp['emp_no']; ?></a></td>
                     <td><?php echo $emp['last_name']; ?></td>
                     <td><?php echo $emp['first_name']; ?></td>
                     <td><?php echo $emp['gender']; ?></td>

@@ -59,6 +59,28 @@ function getEmployes($dept_no)
         return $data;
 }
 
+function getInfoEmployes($emp_no){
+        $sql = "SELECT * FROM employees WHERE emp_no = '%s'  ";
+        $sql = sprintf($sql,$emp_no);
+        $result = mysqli_query(dbconnect(),$sql);
+        $result = mysqli_fetch_assoc($result);
+        return $result;
+}
+
+function getTitle($emp_no){
+        $sql = "SELECT * FROM titles WHERE emp_no = '%s'  ORDER BY from_date ASC";
+        $sql = sprintf($sql,$emp_no);
+        $result = mysqli_query(dbconnect(),$sql);
+        return $result;
+}
+
+function getSalary($emp_no){
+        $sql = "SELECT * FROM salaries WHERE emp_no = '%s' ORDER BY from_date ASC ";
+        $sql = sprintf($sql,$emp_no);
+        $result = mysqli_query(dbconnect(),$sql);
+        return $result;
+}
+
 
 
 

@@ -3,8 +3,15 @@ session_start();
 if (isset($_SESSION['resultat'])) {
     $res = $_SESSION['resultat'];
 } else {
-    $res = null;
+    $res = [];
 }
+if (isset($_GET['offset'])) {
+    $offset = (int) $_GET['offset'];
+} else {
+    $offset = 0;
+}
+$limit = 20;
+$affichage = array_slice($res, $offset, $limit);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -23,24 +30,39 @@ if (isset($_SESSION['resultat'])) {
             <tr>
                 <th>Département</th>
                 <th>Nom</th>
+                <th>Prenom</th>
                 <th>Âge</th>
             </tr>
         </thead>
         <tbody>
-<?php foreach($res as $resultat): ?>
+            <?php if(!empty($affichage)){ ?>
+<?php foreach($affichage as $resultat): ?>
                     <tr>
                         <td><?php echo $resultat['dept_name']; ?></td>
                         <td><?php echo $resultat['first_name'] ;?></td>
+                        <td><?php echo $resultat['last_name'] ;?></td>
                         <td><?php echo $resultat['age'] ;?></td>
                     </tr>
-<?php if(empty($res)): ?>
+                    <?php endforeach; ?>
+                    <?php } else { ?>
                     <tr>
                         <td colspan="3">Aucun résultat trouvé.</td>
                     </tr>
-                      <?php endif; ?>
-<?php endforeach; ?>
+                    <?php } ?>
         </tbody>
     </table>
+<div class="d-flex justify-content-between mt-3">
+    <div>
+        <?php if ($offset > 0) { ?>
+            <a href="resultat.php?offset=<?php echo $offset - $limit; ?>" class="btn btn-secondary">Précédent</a>
+        <?php } ?>
+    </div>
+    <div>
+        <?php if ($offset + $limit < count($res)) { ?>
+            <a href="resultat.php?offset=<?php echo $offset + $limit; ?>" class="btn btn-primary">Suivant</a>
+        <?php } ?>
+    </div>
+</div>
 </div>
 </body>
 </html>

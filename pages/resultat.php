@@ -1,6 +1,10 @@
 <?php
 session_start();
-$res = isset($_SESSION['resultat']) ? $_SESSION['resultat'] : [];
+if (isset($_SESSION['resultat'])) {
+    $res = $_SESSION['resultat'];
+} else {
+    $res = null;
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -23,13 +27,18 @@ $res = isset($_SESSION['resultat']) ? $_SESSION['resultat'] : [];
             </tr>
         </thead>
         <tbody>
-
+<?php foreach($res as $resultat): ?>
                     <tr>
-                        <td><?php echo $res['dept_name']; ?></td>
-                        <td><?php echo $res['first_name'] ;?></td>
-                        <td><?php echo $res['age'] ;?></td>
+                        <td><?php echo $resultat['dept_name']; ?></td>
+                        <td><?php echo $resultat['first_name'] ;?></td>
+                        <td><?php echo $resultat['age'] ;?></td>
                     </tr>
-
+<?php if(empty($res)): ?>
+                    <tr>
+                        <td colspan="3">Aucun résultat trouvé.</td>
+                    </tr>
+                      <?php endif; ?>
+<?php endforeach; ?>
         </tbody>
     </table>
 </div>

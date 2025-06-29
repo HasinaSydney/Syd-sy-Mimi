@@ -83,23 +83,27 @@ function getSalary($emp_no){
 
 
 
+
 function getDepartRecherche($dep, $nom, $min, $max)
 {
-
-$sql = "SELECT e.*, d.dept_name, TIMESTAMPDIFF(YEAR, e.birth_date, CURDATE()) AS age
-        FROM departments AS d
-        JOIN dept_emp AS de ON d.dept_no = de.dept_no
-        JOIN employees AS e ON de.emp_no = e.emp_no
-        WHERE d.dept_name = '%s'
-        AND e.first_name = '%s'
-        AND TIMESTAMPDIFF(YEAR, e.birth_date, CURDATE()) BETWEEN %d AND %d";
+    $sql = "SELECT e.*, d.dept_name, TIMESTAMPDIFF(YEAR, e.birth_date, CURDATE()) AS age
+            FROM departments AS d
+            JOIN dept_emp AS de ON d.dept_no = de.dept_no
+            JOIN employees AS e ON de.emp_no = e.emp_no
+            WHERE d.dept_name = '%s'
+            AND e.first_name = '%s'
+            AND TIMESTAMPDIFF(YEAR, e.birth_date, CURDATE()) BETWEEN %d AND %d
+            LIMIT 20,10";
     $sql = sprintf($sql, $dep, $nom, $min, $max);
     $result = mysqli_query(dbconnect(), $sql);
-    $res = mysqli_fetch_assoc($result) ;
-    return $res;
+    $data = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data[] = $row;
+    }
+    return $data;
 }
 
-function calculAge($birht_date){
+{
 
 }
 ?>

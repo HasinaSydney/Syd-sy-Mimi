@@ -71,7 +71,7 @@ $departements = getDepartement();
             </tbody>
         </table>
     </div>
-   
+   <p><a class="link-offset-2 link-underline link-underline-opacity-0" href="recherche.php">Recherche</a></p>
 </body>
 
 </html>

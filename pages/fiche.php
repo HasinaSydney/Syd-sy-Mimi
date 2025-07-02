@@ -1,8 +1,8 @@
 <?php
 include('../inc/function.php');
 
-if (isset($_GET['emp_no'])) {
-    $empno = $_GET['emp_no'];
+if (isset($_GET['emp_name'])) {
+    $empno = $_GET['emp_name'];
     $infos = getInfoEmployes($empno);
     $titres = getTitle($empno);
     $salaires = getSalary($empno);
@@ -16,9 +16,9 @@ if (isset($_GET['emp_no'])) {
     <meta charset="UTF-8">
     <link href="../assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <title>Employés du département</title>
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
-    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
 <style>
     .tableau {
@@ -53,42 +53,49 @@ if (isset($_GET['emp_no'])) {
                         <?php echo $infos['last_name']; ?>
                     </p>
                     <p class="card-text">Sexe : <?php echo $infos['gender']; ?></p>
+                    <!-- <p class="card-text">Departement: <?php echo $infos['dept_name']; ?></p> -->
+
                 </div>
             </div>
         </div>
-        <table class="tableau">
-            <thead>
-                <thead>
-                    <th>Poste</th>
-                    <th>Période</th>
-                </thead>
-            </thead>
-            <tbody>
-                <?php while ($titre = mysqli_fetch_assoc($titres)) { ?>
-                <tbody>
-                    <td><?php echo $titre['title']; ?></td>
-                    <td>De <?php echo $titre['from_date']; ?> à <?php echo $titre['to_date']; ?></td>
-                </tbody>
-            <?php } ?>
-            </tbody>
-        </table>
+<table class="table table-striped table-bordered mt-4">
+    <thead class="table-dark">
+        <tr>
+            <th>Poste</th>
+            <th>Salaire</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        // On suppose que $titres et $salaires sont synchronisés (même nombre de lignes et même ordre)
+        while ($titre = mysqli_fetch_assoc($titres)) {
+            $salaire = mysqli_fetch_assoc($salaires);
+        ?>
+            <tr>
+                <td><?php echo $titre['title']; ?></td>
+                <td>
+                    <?php    if ($salaire && isset($salaire['salary'])) {
+        echo $salaire['salary'];
+    } else {
+        echo '-';
+    } ?>
+                </td>
+                  <td>
+                    <?php
+                    if ($salaire && isset($salaire['from_date']) && isset($salaire['to_date'])) {
+                        echo $salaire['from_date'] . ' à ' . $salaire['to_date'];
+                    } else {
+                        echo '-';
+                    }
+                    ?>
+                </td>
+            </tr>
+        <?php } ?>
+    </tbody>
+</table>
         <br>
-        <table class="tableau">
-            <thead>
-                <thead>
-                    <th>Salaire</th>
-                    <th>Période</th>
-                </thead>
-            </thead>
-            <tbody>
-                <?php while ($salaire = mysqli_fetch_assoc($salaires)) { ?>
-                <tbody>
-                    <td><?php echo $salaire['salary']; ?></td>
-                    <td>De <?php echo $salaire['from_date']; ?> à <?php echo $salaire['to_date']; ?></td>
-                </tbody>
-            <?php } ?>
-            </tbody>
-        </table>
+      
 
 
     </div>

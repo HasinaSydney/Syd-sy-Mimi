@@ -10,8 +10,10 @@ if (isset($_GET['offset'])) {
 } else {
     $offset = 0;
 }
+
 $limit = 20;
-$affichage = array_slice($res, $offset, $limit);
+$affichage = array_slice($res, 0, $limit);
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -25,7 +27,7 @@ $affichage = array_slice($res, $offset, $limit);
 <body>
 <div class="container mt-5">
     <h1>Résultats de la recherche</h1>
-    <table class="table table-striped">
+    <table class="table table-danger">
         <thead>
             <tr>
                 <th>Département</th>
@@ -54,15 +56,20 @@ $affichage = array_slice($res, $offset, $limit);
 <div class="d-flex justify-content-between mt-3">
     <div>
         <?php if ($offset > 0) { ?>
-            <a href="resultat.php?offset=<?php echo $offset - $limit; ?>" class="btn btn-secondary">Précédent</a>
+            <a href="traitement.php?offset=<?php echo $offset - $limit; ?>" class="btn btn-secondary">Précédent</a>
         <?php } ?>
     </div>
     <div>
-        <?php if ($offset + $limit < count($res)) { ?>
-            <a href="resultat.php?offset=<?php echo $offset + $limit; ?>" class="btn btn-primary">Suivant</a>
+        <?php if ($limit < count($res)) { ?>
+            <a href="traitement.php?offset=<?php echo $offset + $limit; ?>" class="btn btn-primary">Suivant</a>
         <?php } ?>
     </div>
 </div>
 </div>
+<a href="index.php" class ="btn btn-warning">Retour à la Liste</a>
+<?php for($i = 0 ; $i <=(count($res)/20);$i++){ ?>
+    <a href="#">page <?php echo $i ?></a>
+
+    <?php } ?>
 </body>
 </html>

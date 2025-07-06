@@ -25,34 +25,32 @@ function getManagers($dept_no)
         return $result;
 }
 
-function getCurrentManager($dept_no)
+function getCurrentManager()
 {
-        $sql = "SELECT * FROM employees AS e 
-        JOIN dept_manager AS dm ON e.emp_no = dm.emp_no 
-        JOIN departments AS d ON d.dept_no = dm.dept_no 
-        WHERE d.dept_no = '%s' 
-        AND dm.to_date > CURRENT_TIMESTAMP";
-
-        $sql = sprintf($sql, $dept_no);
-        $result = mysqli_query(dbconnect(), $sql);
-        $result = mysqli_fetch_assoc($result);
-        return $result;
+         $sql = "SELECT * FROM v_employee_current_manager";
+    $result = mysqli_query(dbconnect(), $sql);
+    $data = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data[] = $row;
+    }
+    return $data;
+     
 
 }
 
 function getEmployes($dept_name)
 {
         $sql ="SELECT *
-         FROM employees AS e
-         JOIN dept_emp AS de ON e.emp_no = de.emp_no
-         JOIN titles AS t ON e.emp_no = t.emp_no 
-         JOIN departments AS d ON de.dept_no = d.dept_no 
-         WHERE d.dept_name = '%s'
-         AND de.to_date > CURRENT_DATE ORDER by e.emp_no ASC";
+         FROM v_employee_departement_title
+         WHERE dept_name = '%s'
+         AND to_date > CURRENT_DATE ORDER by emp_no ASC";
 
 
         $sql = sprintf($sql, $dept_name);
         $res = mysqli_query(dbconnect(), $sql);
+         if (!$res) {
+        die('Erreur SQL getEmployes : ' . mysqli_error(dbconnect()));
+    }   
         $data = [];
         while ($row = mysqli_fetch_assoc($res)) {
                 $data[] = $row;

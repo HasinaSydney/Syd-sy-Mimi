@@ -1,6 +1,6 @@
 <?php
 include('../inc/function.php');
-$departements = getDepartement();
+$currentManager = getCurrentManager();
 
 ?>
 
@@ -116,19 +116,17 @@ header.d-flex a.btn:hover {
 
             <tbody>
                 <?php
-                while ($dept = mysqli_fetch_assoc($departements)) {
-                    $numero_dept = $dept['dept_no'];
-                    $nom_dept = $dept['dept_name'];
-                    $currentManager = getCurrentManager($numero_dept);
+                foreach($currentManager as $cm):
+                    
                     ?>
                     <tbody>
-                        <td><a href="employes.php?dept_name=<?php echo $nom_dept; ?>"><?php echo $nom_dept; ?></a></td>
-                        <!-- <td><?php echo $nom_dept; ?></td> -->
-                        <td><?php echo $currentManager['first_name']; ?></td>
+                        <td><a href="employes.php?dept_name=<?php echo $cm['dept_name']; ?>"><?php echo $cm['dept_name']; ?></a></td>
+                       
+                        <td><?php echo $cm['first_name']; ?></td>
                     </tbody>
+               
 
-                <?php } ?>
-
+<?php endforeach; ?>
             </tbody>
         </table>
     </div>

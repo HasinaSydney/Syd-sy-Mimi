@@ -38,6 +38,21 @@ function getCurrentManager()
 
 }
 
+function getCurrentMan() { // suppose une fonction existante pour mysqli_connect
+    $sql = "SELECT * FROM v_departement_manager_employes";
+    $result = mysqli_query(dbconnect(), $sql);
+    
+    $managers = [];
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $managers[] = $row;
+        }
+    }
+
+    return $managers;
+}
+
+
 function getEmployes($dept_name)
 {
         $sql ="SELECT *
@@ -113,5 +128,41 @@ $sql = "SELECT COUNT(*) FROM employees AS e
         GROUP BY de.dept_no";
 $result = mysqli_query($sql);
 }
+
+function getTitleStats() {
+    $sql = "SELECT * FROM v_title_gender_salary";
+    $result = mysqli_query(dbconnect(), $sql);
+
+    $stats = [];
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $stats[] = $row;
+        }
+    } else {
+        echo "Erreur MySQL : " . mysqli_error(dbconnect());
+    }
+
+    return $stats;
+}
+
+function getLongestJob($empno) {
+
+    $empno = intval($empno);
+    $sql = "
+        SELECT title, DATEDIFF(IFNULL(to_date, CURDATE()), from_date) AS duree
+        FROM titles
+        WHERE emp_no = $empno
+        ORDER BY duree DESC
+        LIMIT 1
+    ";
+    $result = mysqli_query(dbconnect(), $sql);
+    if ($result && mysqli_num_rows($result) > 0) {
+        return mysqli_fetch_assoc($result);
+    }
+    // Ici tu peux forcer un retour, même si vide, pour éviter null
+    return ['title' => 'N/A', 'duree' => 0];
+}
+
+
 
 ?>

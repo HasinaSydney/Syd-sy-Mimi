@@ -6,6 +6,8 @@ if (isset($_GET['emp_name'])) {
     $infos = getInfoEmployes($empno);
     $titres = getTitle($empno);
     $salaires = getSalary($empno);
+
+    $longestJob = getLongestJob($infos['emp_no']);
 }
 ?>
 
@@ -53,51 +55,58 @@ if (isset($_GET['emp_name'])) {
                         <?php echo $infos['last_name']; ?>
                     </p>
                     <p class="card-text">Sexe : <?php echo $infos['gender']; ?></p>
-                    <!-- <p class="card-text">Departement: <?php echo $infos['dept_name']; ?></p> -->
+                    <p class="card-text">Departement : <?php echo $infos['dept_name']; ?></p>
+
 
                 </div>
             </div>
         </div>
-<table class="table table-striped table-bordered mt-4">
-    <thead class="table-dark">
-        <tr>
-            <th>Poste</th>
-            <th>Salaire</th>
-            <th>Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        // On suppose que $titres et $salaires sont synchronisés (même nombre de lignes et même ordre)
-        while ($titre = mysqli_fetch_assoc($titres)) {
-            $salaire = mysqli_fetch_assoc($salaires);
-        ?>
-            <tr>
-                <td><?php echo $titre['title']; ?></td>
-                <td>
-                    <?php    if ($salaire && isset($salaire['salary'])) {
-        echo $salaire['salary'];
-    } else {
-        echo '-';
-    } ?>
-                </td>
-                  <td>
-                    <?php
-                    if ($salaire && isset($salaire['from_date']) && isset($salaire['to_date'])) {
-                        echo $salaire['from_date'] . ' à ' . $salaire['to_date'];
-                    } else {
-                        echo '-';
-                    }
+        <div class="col-12 col-lg-5 mt-3 ml-5">
+            <div class="alert alert-info">
+                <strong>Emploi le plus longtemps occupé :</strong> <?= htmlspecialchars($longestJob['title']) ?>
+                (<?= $longestJob['duree'] ?> jours)
+            </div>
+        </div>
+
+        <table class="table table-striped table-bordered mt-4">
+            <thead class="table-dark">
+                <tr>
+                    <th>Poste</th>
+                    <th>Salaire</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                // On suppose que $titres et $salaires sont synchronisés (même nombre de lignes et même ordre)
+                while ($titre = mysqli_fetch_assoc($titres)) {
+                    $salaire = mysqli_fetch_assoc($salaires);
                     ?>
-                </td>
-            </tr>
-        <?php } ?>
-    </tbody>
-</table>
+                    <tr>
+                        <td><?php echo $titre['title']; ?></td>
+                        <td>
+                            <?php
+                            if ($salaire && isset($salaire['salary'])) {
+                                echo $salaire['salary'];
+                            } else {
+                                echo '-';
+                            }
+                            ?>
+                        </td>
+                        <td>
+                            <?php
+                            if ($salaire && isset($salaire['from_date']) && isset($salaire['to_date'])) {
+                                echo $salaire['from_date'] . ' à ' . $salaire['to_date'];
+                            } else {
+                                echo '-';
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
         <br>
-      
-
-
     </div>
 </body>
 

@@ -41,9 +41,9 @@ $titleStats = getTitleStats();
         <tbody>
             <?php foreach ($titleStats as $stat): ?>
                 <tr>
-                    <td><?= htmlspecialchars($stat['title']) ?></td>
-                    <td><?= htmlspecialchars($stat['hommes']) ?></td>
-                    <td><?= htmlspecialchars($stat['femmes']) ?></td>
+                    <td><?php echo $stat['title']?></td>
+                    <td><?php echo $stat['hommes'] ?></td>
+                    <td><?php echo $stat['femmes'] ?></td>
                     <td><?= number_format($stat['salaire_moyen'], 2, ',', ' ') ?> $</td>
                 </tr>
             <?php endforeach; ?>

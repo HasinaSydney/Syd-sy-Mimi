@@ -1,11 +1,11 @@
 <?php
 include('../inc/function.php');
 
-$deptName = $_GET['dept_name'] ?? '';
-$employes = [];
+$emp_name= $_GET['emp_name'];
 
-if ($deptName) {
-    $employes = getEmployes($deptName);
+
+if ($emp_name) {
+    $employes = getEmployes($emp_name);
 }
 ?>
 
@@ -37,7 +37,7 @@ if ($deptName) {
 </head>
 <body>
     <div class="container mt-5">
-        <h3>Employés du département : <?= htmlspecialchars($deptName) ?></h3>
+        <h3>Employés du département : <?= htmlspecialchars($employes['dept_name']); ?></h3>
 
         <?php if (!empty($employes)): ?>
             <table class="table table-dark table-striped table-bordered">
@@ -52,12 +52,12 @@ if ($deptName) {
                     <?php foreach ($employes as $emp): ?>
                         <tr>
                             <td>
-                                <a href="fiche.php?emp_name=<?= urlencode($emp['last_name']) ?>">
-                                    <?= htmlspecialchars($emp['last_name']) ?>
+                                <a href="fiche.php?emp_name=<?php echo $emp['last_name']; ?>">
+                                    <?php echo $emp['last_name'] ?>
                                 </a>
                             </td>
-                            <td><?= htmlspecialchars($emp['first_name']) ?></td>
-                            <td><?= htmlspecialchars($emp['gender']) ?></td>
+                            <td><?php echo $emp['first_name'] ?></td>
+                            <td><?php echo $emp['gender'] ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

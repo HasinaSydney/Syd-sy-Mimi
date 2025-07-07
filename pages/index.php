@@ -97,15 +97,18 @@ $currentManager = getCurrentMan();
                     <?php if (isset($cm['dept_name'], $cm['manager_first_name'], $cm['manager_last_name'], $cm['employee_count'])): ?>
                         <tr>
                             <td>
-                                <a href="employes.php?dept_name=<?= urlencode($cm['dept_name']) ?>">
-                                    <?= htmlspecialchars($cm['dept_name']) ?>
-                                </a>
+                                
+                                    <?php echo $cm['dept_name']; ?>
+                            
                             </td>
-                            <td><?= htmlspecialchars($cm['manager_first_name'] . ' ' . $cm['manager_last_name']) ?></td>
-                            <td><?= htmlspecialchars($cm['employee_count']) ?></td>
+                            <td><a href="employes.php?emp_name=<?php echo $cm['manager_first_name'];?>"><?php echo $cm['manager_first_name']; ?></td>
+                            <td><?php echo $cm['employee_count'] ?>
+                            </a>
+                        
+                        </td>
                         </tr>
                     <?php else: ?>
-                        <!-- ligne mal formée, ignorée ou message de debug -->
+                     
                         <tr>
                             <td colspan="3" style="color:red;">Ligne invalide</td>
                         </tr>

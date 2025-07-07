@@ -38,7 +38,7 @@ function getCurrentManager()
 
 }
 
-function getCurrentMan() { // suppose une fonction existante pour mysqli_connect
+function getCurrentMan() { 
     $sql = "SELECT * FROM v_departement_manager_employes";
     $result = mysqli_query(dbconnect(), $sql);
     
@@ -53,19 +53,17 @@ function getCurrentMan() { // suppose une fonction existante pour mysqli_connect
 }
 
 
-function getEmployes($dept_name)
+function getEmployes($first_name)
 {
         $sql ="SELECT *
          FROM v_employee_departement_title
-         WHERE dept_name = '%s'
+         WHERE first_name = '%s'
          AND to_date > CURRENT_DATE ORDER by emp_no ASC";
 
 
-        $sql = sprintf($sql, $dept_name);
+        $sql = sprintf($sql, $first_name);
         $res = mysqli_query(dbconnect(), $sql);
-         if (!$res) {
-        die('Erreur SQL getEmployes : ' . mysqli_error(dbconnect()));
-    }   
+         
         $data = [];
         while ($row = mysqli_fetch_assoc($res)) {
                 $data[] = $row;
@@ -103,7 +101,7 @@ function getSalary($emp_no){
 
 
 
-function getDepartRecherche($nom,$dep,$min, $max,$offset,$limit)
+function getDepartRecherche($dep,$min, $max,$offset,$limit)
 {
 $sql = "SELECT e.*, d.dept_name, TIMESTAMPDIFF(YEAR, e.birth_date, CURDATE()) AS age
         FROM departments AS d
@@ -148,8 +146,7 @@ function getTitleStats() {
 function getLongestJob($empno) {
 
     $empno = intval($empno);
-    $sql = "
-        SELECT title, DATEDIFF(IFNULL(to_date, CURDATE()), from_date) AS duree
+    $sql = "  SELECT title, DATEDIFF(IFNULL(to_date, CURDATE()), from_date) AS duree
         FROM titles
         WHERE emp_no = $empno
         ORDER BY duree DESC

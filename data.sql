@@ -22,17 +22,16 @@ d.dept_no as dept_no,d.dept_name FROM employees AS e
 
 select * from v_employee_departement;
 
-create or replace view v_employee_departement_title as
-SELECT e.emp_no AS emp_no ,e.first_name,
-e.last_name,e.gender,e.hire_date,de.emp_no as no_emp,
-de.dept_no as no_dept,de.from_date,de.to_date,t.emp_no as no_emp_title,
-t.title,t.from_date as from_date_title,t.to_date as to_date_title,
-d.dept_no as dept_no,d.dept_name FROM employees AS e 
-        JOIN dept_emp AS de ON e.emp_no = de.emp_no 
-        JOIN titles AS t ON t.emp_no = de.emp_no
-        JOIN departments AS d ON d.dept_no = de.dept_no;
+CREATE OR REPLACE VIEW v_employee_department_title AS
+SELECT e.emp_no, e.first_name, e.last_name, e.gender, e.hire_date,
+       de.from_date, de.to_date, t.title, t.from_date AS from_date_title,
+       t.to_date AS to_date_title, d.dept_no, d.dept_name
+FROM employees AS e
+JOIN dept_emp AS de ON e.emp_no = de.emp_no
+JOIN titles AS t ON t.emp_no = e.emp_no
+JOIN departments AS d ON d.dept_no = de.dept_no;
 
-
+select * from v_employee_department_title;
 
         CREATE OR REPLACE VIEW v_departement_manager_employes AS
 SELECT 
@@ -40,7 +39,7 @@ SELECT
     m.first_name AS manager_first_name,
     m.last_name AS manager_last_name,
     COUNT(e.emp_no) AS employee_count
-FROM departments d
+FROM departments as d
 JOIN dept_manager dm ON dm.dept_no = d.dept_no AND dm.to_date = '9999-01-01'
 JOIN employees m ON m.emp_no = dm.emp_no
 LEFT JOIN current_dept_emp e ON e.dept_no = d.dept_no
